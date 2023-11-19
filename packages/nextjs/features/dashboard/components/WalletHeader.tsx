@@ -1,13 +1,11 @@
 import React from "react";
-import { PlusOutlined } from "@ant-design/icons";
-import { Button, Checkbox } from "antd";
+import { AddWalletBtn } from "./AddWallet";
+import { Checkbox } from "antd";
 
 const WalletHeader = () => {
   return (
     <div className="flex justify-between items-center">
-      <Button icon={<PlusOutlined rev={{}} />} type="primary" style={{ background: "#5E5ADB" }} size="small">
-        Add Wallet
-      </Button>
+      <AddWalletBtn onSubmit={{ fn: data => console.log("I ws clicked", data) }} />
       <Checkbox.Group
         options={[
           {
