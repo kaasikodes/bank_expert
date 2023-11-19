@@ -137,7 +137,7 @@ const WalletTableContainer = () => {
           key: "___",
           render: (_, record) => (
             <>
-              <WalletActions address={record.address} />
+              <WalletActions address={record.address} data={record} />
             </>
           ),
         },
