@@ -1,5 +1,5 @@
 import WalletTableContainer from "./WalletTableContainer";
-import { Avatar, Segmented, Tabs, Tag } from "antd";
+import { Avatar, Segmented, Tabs } from "antd";
 
 const WalletTabs = () => {
   return (
@@ -14,16 +14,6 @@ const WalletTabs = () => {
         {
           key: "Cold",
           label: <TabLabel amount={10} title={"Cold"} />,
-        },
-        {
-          key: "Add Category",
-          disabled: true,
-          className: "disabled:cursor-pointer",
-          label: (
-            <Tag color="#5E5ADB" className="rounded-full disabled:cursor-pointer">
-              <span>+ add category</span>
-            </Tag>
-          ),
         },
       ]}
     />

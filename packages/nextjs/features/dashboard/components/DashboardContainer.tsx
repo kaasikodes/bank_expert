@@ -8,7 +8,7 @@ import WalletTabs from "./WalletTabs";
 const DashboardContainer = () => {
   return (
     <DashboardLayout>
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col lg:gap-10">
         {/* controls */}
         <WalletHeader />
         {/* wallet tabs */}
