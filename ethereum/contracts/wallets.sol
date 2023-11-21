@@ -45,6 +45,11 @@ contract Wallet {
         chains.push(newChain);
     }
 
+    function reassignMaster(address newmaster) public restricted {
+        require(msg.sender == masterwallet);
+        masterwallet = newmaster;
+    }
+
     function getSummary() public view returns (
         uint,
         uint,
