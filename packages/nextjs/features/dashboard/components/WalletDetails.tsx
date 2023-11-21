@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { DEFAULT_WALLET_CHAINS } from "../constants";
 import { TWalletChainData } from "../types";
+import { SendCoins } from "./SendCoins";
 import { Avatar, Form, Input, Modal, Segmented, Select, Typography } from "antd";
 import moment from "moment";
 import { TModalProps } from "~~/types/general";
@@ -82,13 +83,30 @@ const WalletInsights: React.FC<TWalletDetailProps> = ({ address, data }) => {
 };
 
 const WalletDetailActionForm = () => {
+  const [action, setAction] = useState<"Send Coins" | "Send Message">();
+  const [form] = Form.useForm<{ chain: string; action: string }>();
+  const [selectedChain, setSelectedChain] = useState<string>(DEFAULT_WALLET_CHAINS[0].key);
   return (
     <>
-      <Form labelCol={{ span: 24 }} className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-4">
-        <Form.Item label="Choose Blockchain" name="chain" className="lg:col-span-1">
+      <SendCoins
+        selectedChain={selectedChain}
+        open={action === "Send Coins"}
+        onClose={() => setAction(undefined)}
+        onSubmit={{ fn: () => setAction(undefined) }}
+      />
+      <Form
+        form={form}
+        onFinish={values => {
+          console.log(values, ".......");
+        }}
+        labelCol={{ span: 24 }}
+        className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-4"
+      >
+        <Form.Item label="Choose Blockchain" className="lg:col-span-1">
           <Select
             placeholder="Select Chain"
-            defaultValue={DEFAULT_WALLET_CHAINS[0].key}
+            onSelect={value => setSelectedChain(value)}
+            value={selectedChain}
             options={DEFAULT_WALLET_CHAINS.map(chain => ({
               value: chain.key,
 
@@ -101,12 +119,49 @@ const WalletDetailActionForm = () => {
             }))}
           />
         </Form.Item>
-        <Form.Item label="Choose Action" name="action" className="lg:col-span-1 flex justify-end">
+        <Form.Item label="Choose Action" className="lg:col-span-1 flex justify-end">
           <div className="bg-red-400 flex justify-start">
-            <Segmented options={["Send Coins", "Send Message"]} style={{ color: "#5E5ADB" }} />
+            <Segmented
+              onSelect={() => form.submit()}
+              options={[
+                {
+                  label: (
+                    <span className="cursor-pointer" onClick={() => setAction("Send Coins")}>
+                      Send Coins
+                    </span>
+                  ),
+                  value: "Send Coins",
+                },
+                {
+                  label: (
+                    <span className="cursor-pointer" onClick={() => form.submit()}>
+                      Send Message
+                    </span>
+                  ),
+                  value: "Send Message",
+                },
+              ]}
+              style={{ color: "#5E5ADB" }}
+            />
           </div>
         </Form.Item>
       </Form>
+    </>
+  );
+};
+
+export const WalletDetailsBtn: React.FC<TWalletDetailProps & { children?: React.ReactNode }> = ({
+  address,
+  data,
+  children,
+}) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <WalletDetails address={address} data={data} open={open} onClose={() => setOpen(false)} />
+      <div className="cursor-pointer" onClick={() => setOpen(true)}>
+        {children}
+      </div>
     </>
   );
 };

@@ -2,6 +2,7 @@ import React from "react";
 import { DEFAULT_WALLET_CHAINS, DUMMY_WALLET_CHAIN_DATA } from "../constants";
 import { TWalletChainData } from "../types";
 import WalletActions from "./WalletActions";
+import { WalletDetailsBtn } from "./WalletDetails";
 import WalletTable from "./WalletTable";
 import { CalendarOutlined } from "@ant-design/icons";
 import { Avatar, Tag } from "antd";
@@ -31,9 +32,11 @@ const WalletTableContainer = () => {
           // defaultSortOrder: "descend",
           sorter: (a, b) => a.name.localeCompare(b.name),
           render: (_, record) => (
-            <Tag>
-              <span>{record.name}</span>
-            </Tag>
+            <WalletDetailsBtn address={record.address} data={record}>
+              <Tag>
+                <span>{record.name}</span>
+              </Tag>
+            </WalletDetailsBtn>
           ),
         },
         {

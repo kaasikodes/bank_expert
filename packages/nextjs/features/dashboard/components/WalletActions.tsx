@@ -5,7 +5,11 @@ import { MoreOutlined } from "@ant-design/icons";
 import { Button, Dropdown } from "antd";
 
 type TAction = "view" | "edit" | "delete";
-const WalletActions: React.FC<{ address: string; data?: TWalletChainData }> = ({ address, data }) => {
+const WalletActions: React.FC<{ address: string; data?: TWalletChainData; children?: React.ReactNode }> = ({
+  address,
+  data,
+  children = <Button icon={<MoreOutlined rev={{}} />} type="text" size="small" />,
+}) => {
   const [action, setAction] = useState<TAction>();
   const onClose = () => {
     setAction(undefined);
@@ -34,7 +38,7 @@ const WalletActions: React.FC<{ address: string; data?: TWalletChainData }> = ({
         }}
         trigger={["click"]}
       >
-        <Button icon={<MoreOutlined rev={{}} />} type="text" size="small" />
+        {children}
       </Dropdown>
     </>
   );
