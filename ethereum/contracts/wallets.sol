@@ -1,19 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract WalletFactory {
-    address payable[] public deployWallets;
-
-    function createWallet() public {
-        address newWallet = address(new Wallet(msg.sender));
-        deployWallets.push(payable(newWallet));
-    }
-
-    function getDeployedWallets() public view returns (address payable[] memory) {
-        return deployWallets;
-    }
-}
-
 contract Wallet {
     struct Chain {
         string description;
@@ -35,7 +22,11 @@ contract Wallet {
         owners[creator] = true;
     }
 
-    function addChain(string memory description, uint price, address newprotocol) public restricted {
+    function addChain(
+        string memory description,
+        uint price,
+        address newprotocol
+    ) public restricted {
         require(msg.sender == masterwallet);
         Chain memory newChain = Chain({
             description: description,
@@ -50,16 +41,8 @@ contract Wallet {
         masterwallet = newmaster;
     }
 
-    function getSummary() public view returns (
-        uint,
-        uint,
-        address
-    ) {
-        return (
-            address(this).balance,
-            chains.length,
-            masterwallet
-        );
+    function getSummary() public view returns (uint, uint, address) {
+        return (address(this).balance, chains.length, masterwallet);
     }
 
     function getWalletCount() public view returns (uint) {
