@@ -47,7 +47,7 @@ const WalletDetails: React.FC<TProps> = ({ onClose, open, address, data }) => {
 const WalletInsights: React.FC<TWalletDetailProps> = ({ address, data }) => {
   return (
     <div className="flex flex-col gap-6">
-      <Input disabled value={address} />
+      <Input value={address} />
       <div className="px-4 py-4  border-black border flex gap-6">
         <Avatar src="" size={80} />
         <div className="flex flex-col gap-4">
