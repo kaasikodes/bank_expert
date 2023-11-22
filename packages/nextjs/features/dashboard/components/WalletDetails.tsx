@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { DEFAULT_WALLET_CHAINS } from "../constants";
 import { TWalletChainData } from "../types";
 import { SendCoins } from "./SendCoins";
+import { SendMessage } from "./SendMessage";
 import { Avatar, Form, Input, Modal, Segmented, Select, Typography } from "antd";
 import moment from "moment";
 import { TModalProps } from "~~/types/general";
@@ -94,6 +95,12 @@ const WalletDetailActionForm = () => {
         onClose={() => setAction(undefined)}
         onSubmit={{ fn: () => setAction(undefined) }}
       />
+      <SendMessage
+        selectedChain={selectedChain}
+        open={action === "Send Message"}
+        onClose={() => setAction(undefined)}
+        onSubmit={{ fn: () => setAction(undefined) }}
+      />
       <Form
         form={form}
         onFinish={values => {
@@ -134,7 +141,7 @@ const WalletDetailActionForm = () => {
                 },
                 {
                   label: (
-                    <span className="cursor-pointer" onClick={() => form.submit()}>
+                    <span className="cursor-pointer" onClick={() => setAction("Send Message")}>
                       Send Message
                     </span>
                   ),
