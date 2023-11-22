@@ -48,7 +48,7 @@ model User {
 }
 model InteractiveAddress {
     id            String    @id @default(cuid())
-    name          String
+    address          String
     userId       String
     chain TestnetBlockchainSupportedType?
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
