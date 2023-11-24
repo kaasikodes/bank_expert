@@ -127,7 +127,7 @@ const WalletDetailActionForm = () => {
           />
         </Form.Item>
         <Form.Item label="Choose Action" className="lg:col-span-1 flex justify-end">
-          <div className="bg-red-400 flex justify-start">
+          <div className="flex justify-start">
             <Segmented
               onSelect={() => form.submit()}
               options={[
