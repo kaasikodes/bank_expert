@@ -2,6 +2,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { Wallet } from "@prisma/client";
 import NextAuth, { type DefaultSession, type NextAuthOptions } from "next-auth";
 import { DefaultJWT } from "next-auth/jwt";
+import GithubProvider from "next-auth/providers/github";
 import TwitterProvider from "next-auth/providers/twitter";
 import { prisma } from "~~/config/database";
 import ENV from "~~/config/enviroment";
@@ -77,12 +78,15 @@ export const authOptions: NextAuthOptions = {
       clientSecret: ENV.TWITTER_CLIENT_SECRET,
       version: "2.0",
     }),
+    GithubProvider({
+      clientId: ENV.GITHUB_CLIENT_ID,
+      clientSecret: ENV.GITHUB_CLIENT_SECRET,
+    }),
   ],
   adapter: PrismaAdapter(prisma),
   pages: {
     signIn: "/auth/login",
+    verifyRequest: "/dashboard",
   },
 };
-const handler = NextAuth(authOptions);
-
-export { handler as GET, handler as POST };
+export default NextAuth(authOptions);
