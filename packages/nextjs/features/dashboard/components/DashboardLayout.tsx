@@ -1,9 +1,11 @@
 "use client";
 
-import React from "react";
-import { BellFilled, QuestionCircleOutlined } from "@ant-design/icons";
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { BellFilled, LogoutOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Avatar, Badge, Layout, Menu, Tag, Typography } from "antd";
+import { signOut, useSession } from "next-auth/react";
 import { BankExpertLogo } from "~~/components/assets/BankExpertLogo";
 import { MetaMaskLogo } from "~~/components/assets/MetaMaskLogo";
 import { SettingsIcon } from "~~/components/assets/SettingsIcon";
@@ -32,6 +34,16 @@ const items: MenuProps["items"] = [
 ];
 
 const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { data: session } = useSession();
+  const handleLogout = () => {
+    signOut();
+  };
+  const { push } = useRouter();
+  useEffect(() => {
+    if (!!session === false) {
+      push("/auth/login");
+    }
+  }, [push, session]);
   return (
     <Layout
       hasSider
@@ -71,7 +83,8 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
                 <BellFilled rev={{}} className="text-xl text-gray-500" />
               </Badge>
               <QuestionCircleOutlined rev={{}} className="text-xl text-gray-500" />
-              <Avatar src="https://picsum.photos/193" />
+              <Avatar src={session?.user.image} />
+              <LogoutOutlined rev={{}} className="text-xl text-gray-500" onClick={handleLogout} />
             </div>
           </div>
         </Header>

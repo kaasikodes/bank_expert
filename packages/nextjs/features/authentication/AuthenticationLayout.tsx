@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ScheduleOutlined } from "@ant-design/icons";
+import { useSession } from "next-auth/react";
 
 interface IProps {
   alternativeAction: {
@@ -14,6 +16,14 @@ interface IProps {
 }
 
 const AuthLayout = ({ alternativeAction, children, heading }: IProps) => {
+  const { data: session } = useSession();
+
+  const { push } = useRouter();
+  useLayoutEffect(() => {
+    if (!!session === true) {
+      push("/dashboard");
+    }
+  }, [push, session]);
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 h-screen">
       {/* image n animation */}
