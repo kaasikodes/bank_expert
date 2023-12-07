@@ -20,7 +20,7 @@ export const useScaffoldEventSubscriber = <
   eventName,
   listener,
 }: UseScaffoldEventConfig<TContractName, TEventName>) => {
-  const { data: deployedContractData } = useDeployedContractInfo(contractName);
+  const { data: deployedContractData } = useDeployedContractInfo(contractName as any);
 
   const addInexedArgsToLogs = (logs: Log[]) => logs.map(addIndexedArgsToEvent);
   const listenerWithIndexedArgs = (logs: Log[]) =>

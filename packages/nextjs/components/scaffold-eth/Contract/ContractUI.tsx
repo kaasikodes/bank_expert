@@ -2,6 +2,7 @@ import { useReducer } from "react";
 import { ContractReadMethods } from "./ContractReadMethods";
 import { ContractVariables } from "./ContractVariables";
 import { ContractWriteMethods } from "./ContractWriteMethods";
+import { useNetwork } from "wagmi";
 import { Spinner } from "~~/components/assets/Spinner";
 import { Address, Balance } from "~~/components/scaffold-eth";
 import { useDeployedContractInfo, useNetworkColor } from "~~/hooks/scaffold-eth";
@@ -19,8 +20,8 @@ type ContractUIProps = {
 export const ContractUI = ({ contractName, className = "" }: ContractUIProps) => {
   const [refreshDisplayVariables, triggerRefreshDisplayVariables] = useReducer(value => !value, false);
   const configuredNetwork = getTargetNetwork();
-
-  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo(contractName);
+  const { chain } = useNetwork();
+  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo(chain as any);
   const networkColor = useNetworkColor();
 
   if (deployedContractLoading) {
@@ -54,10 +55,10 @@ export const ContractUI = ({ contractName, className = "" }: ContractUIProps) =>
                 </div>
               </div>
             </div>
-            {configuredNetwork && (
+            {chain && (
               <p className="my-0 text-sm">
                 <span className="font-bold">Network</span>:{" "}
-                <span style={{ color: networkColor }}>{configuredNetwork.name}</span>
+                <span style={{ color: networkColor as any }}>{chain.name}</span>
               </p>
             )}
           </div>

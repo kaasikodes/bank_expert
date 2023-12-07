@@ -7,7 +7,10 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      = "mysql://root:hhYYKJG%^&*jkj4555@172.18.0.2:3306/bankxpert"
+
+  // url      = env("DATABASE_URL")
+  // url      = "mysql://cdb-mnk613y2:hhYYKJG%^&*jkj4555@172.18.0.2:3306/bankxpert"
 }
 
 enum TestnetBlockchainSupportedType {

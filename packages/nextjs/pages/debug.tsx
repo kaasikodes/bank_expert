@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import type { NextPage } from "next";
 import { useLocalStorage } from "usehooks-ts";
+import { useNetwork } from "wagmi";
 import { Footer } from "~~/components/Footer";
 import { Header } from "~~/components/Header";
 import { MetaHeader } from "~~/components/MetaHeader";
@@ -9,9 +10,10 @@ import { ContractName } from "~~/utils/scaffold-eth/contract";
 import { getContractNames } from "~~/utils/scaffold-eth/contractNames";
 
 const selectedContractStorageKey = "scaffoldEth2.selectedContract";
-const contractNames = getContractNames();
 
 const Debug: NextPage = () => {
+  const { chain } = useNetwork();
+  const contractNames = getContractNames(chain);
   const [selectedContract, setSelectedContract] = useLocalStorage<ContractName>(
     selectedContractStorageKey,
     contractNames[0],
@@ -21,7 +23,7 @@ const Debug: NextPage = () => {
     if (!contractNames.includes(selectedContract)) {
       setSelectedContract(contractNames[0]);
     }
-  }, [selectedContract, setSelectedContract]);
+  }, [contractNames, selectedContract, setSelectedContract]);
 
   return (
     <>

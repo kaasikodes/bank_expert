@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { BellFilled, LogoutOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import type { MenuProps } from "antd";
 import { Avatar, Badge, Layout, Menu, Tag, Typography } from "antd";
 import { signOut, useSession } from "next-auth/react";
@@ -79,6 +80,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
               </Tag>
             </div>
             <div className="flex gap-6 items-center" style={{ gap: "1 rem" }}>
+              <ConnectButton />
               <Badge dot>
                 <BellFilled rev={{}} className="text-xl text-gray-500" />
               </Badge>

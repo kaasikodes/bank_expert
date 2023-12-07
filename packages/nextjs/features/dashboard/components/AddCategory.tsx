@@ -1,6 +1,12 @@
+"use client";
+
 import React, { useState } from "react";
 import { Form, Input, Modal } from "antd";
 import { Button } from "antd";
+import { useSession } from "next-auth/react";
+import { useQueryClient } from "react-query";
+import { useAddWalletCategory } from "~~/hooks/wallet/category/useAddWalletCategory";
+import { QUERY_KEY_FOR_WALLET_CATEGORIES } from "~~/hooks/wallet/category/useGetWalletCategories";
 import { TModalProps } from "~~/types/general";
 
 enum EAddCategoryFormItemName {
@@ -13,8 +19,30 @@ type AddCategoryProps = {
   onSubmit: { fn: (data: TAddCategorySubmitData) => void; isLoading?: boolean };
 };
 type TProps = TModalProps & AddCategoryProps;
-export const AddCategoryModal: React.FC<TProps> = ({ open, onClose, onSubmit }) => {
+export const AddCategoryModal: React.FC<TProps> = ({ open, onClose }) => {
+  const queryClient = useQueryClient();
+
   const [form] = Form.useForm<TAddCategorySubmitData>();
+  const { data: session } = useSession();
+  const { mutate, isLoading } = useAddWalletCategory();
+  const handleSubmit = (data: any) => {
+    mutate(
+      {
+        name: data.name,
+        userId: session?.user.id ?? "",
+      },
+      {
+        // onError: () => {},
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_FOR_WALLET_CATEGORIES],
+            // exact: true,
+          });
+        },
+      },
+    );
+  };
+
   return (
     <Modal
       title="Add New Category"
@@ -45,18 +73,13 @@ export const AddCategoryModal: React.FC<TProps> = ({ open, onClose, onSubmit }) 
       footer={
         <div className="flex gap-4 justify-end">
           <Button onClick={onClose}>Cancel</Button>
-          <Button
-            type="primary"
-            onClick={() => form.submit()}
-            style={{ background: "#5E5ADB" }}
-            loading={onSubmit?.isLoading}
-          >
+          <Button type="primary" onClick={() => form.submit()} style={{ background: "#5E5ADB" }} loading={isLoading}>
             Add Category
           </Button>
         </div>
       }
     >
-      <Form form={form} labelCol={{ span: 24 }} requiredMark={false} onFinish={onSubmit?.fn}>
+      <Form form={form} labelCol={{ span: 24 }} requiredMark={false} onFinish={handleSubmit}>
         <Form.Item
           label="Wallet Category Name"
           name={EAddCategoryFormItemName.name}

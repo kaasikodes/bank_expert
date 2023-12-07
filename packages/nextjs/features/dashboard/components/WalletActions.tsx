@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { TWalletChainData } from "../types";
-import WalletDetails from "./WalletDetails";
+import { WalletAllowListDestinationChain } from "./WalletAllowListDestinationChain";
 import { MoreOutlined } from "@ant-design/icons";
 import { Button, Dropdown } from "antd";
 
-type TAction = "view" | "edit" | "delete";
+type TAction = "allowlistDestinationChain";
 const WalletActions: React.FC<{ address: string; data?: TWalletChainData; children?: React.ReactNode }> = ({
   address,
-  data,
   children = <Button icon={<MoreOutlined rev={{}} />} type="text" size="small" />,
 }) => {
   const [action, setAction] = useState<TAction>();
@@ -16,23 +15,18 @@ const WalletActions: React.FC<{ address: string; data?: TWalletChainData; childr
   };
   return (
     <>
-      <WalletDetails open={action === "view"} onClose={onClose} address={address} data={data} />
+      <WalletAllowListDestinationChain
+        open={action === "allowlistDestinationChain"}
+        onClose={onClose}
+        contractAddress={address}
+      />
       <Dropdown
         menu={{
           items: [
             {
-              onClick: () => setAction("view"),
-              label: "View",
-              key: "View",
-            },
-            {
-              label: "Edit",
-              key: "Edit",
-            },
-            {
-              className: "text-red-400",
-              label: "Delete",
-              key: "Delete",
+              onClick: () => setAction("allowlistDestinationChain"),
+              label: "allowlistDestinationChain",
+              key: "allowlistDestinationChain",
             },
           ],
         }}
