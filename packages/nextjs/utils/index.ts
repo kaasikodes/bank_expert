@@ -6,7 +6,7 @@ export const truncateString = (value: string, maxLength?: number): string => {
   maxLength = typeof maxLength === "number" && maxLength > 0 ? maxLength : DEFAULT_MAX_LENGTH;
 
   // Check if the value is longer than the specified maxLength
-  if (value.length > maxLength) {
+  if (value?.length > maxLength) {
     // Truncate the string and add an ellipsis to indicate truncation
     return value.slice(0, maxLength) + "...";
   }

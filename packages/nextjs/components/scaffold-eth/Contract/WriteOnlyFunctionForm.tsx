@@ -13,9 +13,9 @@ import {
   getParsedError,
 } from "~~/components/scaffold-eth";
 import { useTransactor } from "~~/hooks/scaffold-eth";
-import { getTargetNetwork, notification } from "~~/utils/scaffold-eth";
+import { notification } from "~~/utils/scaffold-eth";
 
-type WriteOnlyFunctionFormProps = {
+export type WriteOnlyFunctionFormProps = {
   abiFunction: AbiFunction;
   onChange: () => void;
   contractAddress: Address;
@@ -30,9 +30,10 @@ export const WriteOnlyFunctionForm = ({
 }: WriteOnlyFunctionFormProps) => {
   const [form, setForm] = useState<Record<string, any>>(() => getInitialFormState(abiFunction));
   const [txValue, setTxValue] = useState<string | bigint>("");
-  const { chain } = useNetwork();
   const writeTxn = useTransactor();
-  const writeDisabled = !chain || chain?.id !== getTargetNetwork().id;
+  const { chain } = useNetwork();
+  // const writeDisabled = !chain || chain?.id !== getTargetNetwork().id; // logic not valid as fns now show up depending on the chain
+  const writeDisabled = !chain;
 
   const {
     data: result,

@@ -40,7 +40,9 @@ export const useScaffoldEventHistory = <
   const [events, setEvents] = useState<any[]>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string>();
-  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo(contractName);
+  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo(
+    contractName as any,
+  );
   const publicClient = usePublicClient();
 
   useEffect(() => {

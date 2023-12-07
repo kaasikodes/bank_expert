@@ -20,7 +20,9 @@ export const useScaffoldContract = <
   contractName: TContractName;
   walletClient?: TWalletClient | null;
 }) => {
-  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo(contractName);
+  const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo(
+    contractName as any,
+  );
   const publicClient = usePublicClient();
 
   let contract = undefined;

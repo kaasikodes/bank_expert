@@ -65,6 +65,7 @@ const getParsedContractFunctionArgs = (form: Record<string, any>) => {
       // ignore error, it will be handled when sending/reading from a function
     }
   });
+  console.log(parsedArguments, "LLLL");
   return parsedArguments;
 };
 

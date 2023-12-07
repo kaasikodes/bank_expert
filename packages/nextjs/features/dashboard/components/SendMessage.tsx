@@ -1,6 +1,9 @@
-import { Empty, Form, Input, Modal, Skeleton } from "antd";
-import { Button } from "antd";
-import { MessageList } from "react-chat-elements";
+import { useEffect } from "react";
+import { DEFAULT_WALLET_CHAINS } from "../constants";
+import { useSendMessageCrossChain } from "./WalletDetails";
+import { Input, Modal, Skeleton } from "antd";
+import { Button, Select } from "antd";
+import { TxReceipt } from "~~/components/scaffold-eth";
 import { TModalProps } from "~~/types/general";
 
 enum EAddCategoryFormItemName {
@@ -10,75 +13,39 @@ type TAddCategorySubmitData = {
   [EAddCategoryFormItemName.comment]: string;
 };
 type AddCategoryProps = {
-  onSubmit: { fn: (data: TAddCategorySubmitData) => void; isLoading?: boolean };
+  onSubmit?: { fn: (data: TAddCategorySubmitData) => void; isLoading?: boolean };
   selectedChain: string;
+  contractAddress: string;
 };
 type TProps = TModalProps & AddCategoryProps;
 
-const DUMMY_MESSAGES = [
-  {
-    id: 1,
-    taskId: 2,
-    commenterId: 1,
-    comment: "GM, I'll be in touch with you shortly. Thank you.",
-    companyId: 1,
-    createdAt: "2023-11-14T08:45:53.000Z",
-    updatedAt: "2023-11-14T08:45:53.000Z",
-    commenter: {
-      id: 1,
-      firstName: "Grace",
-      lastName: "Komolafe",
-      email: "oluwatoyin@snapnetsolutions.com",
-      hasSelfService: true,
-      empUid: "EMP387451",
-      roleId: 1,
-      status: "confirmed",
-      companyId: 1,
-      designationId: 1,
-      userId: 1,
-      avatarUrl: "",
-      createdAt: "2023-02-10T05:19:35.000Z",
-      updatedAt: "2023-10-10T11:15:13.000Z",
-      deletedAt: null,
-    },
-  },
-  {
-    id: 2,
-    taskId: 2,
-    commenterId: 1,
-    comment: "Hello",
-    companyId: 1,
-    createdAt: "2023-11-14T08:45:53.000Z",
-    updatedAt: "2023-11-14T08:45:53.000Z",
-    commenter: {
-      id: 1,
-      firstName: "James",
-      lastName: "Komolafe",
-      email: "oluwatoyin@snapnetsolutions.com",
-      hasSelfService: true,
-      empUid: "EMP387451",
-      roleId: 1,
-      status: "confirmed",
-      companyId: 1,
-      designationId: 1,
-      userId: 1,
-      avatarUrl: "",
-      createdAt: "2023-02-10T05:19:35.000Z",
-      updatedAt: "2023-10-10T11:15:13.000Z",
-      deletedAt: null,
-    },
-  },
-];
-const data = { total: DUMMY_MESSAGES.length, data: DUMMY_MESSAGES };
-export const SendMessage: React.FC<TProps> = ({ open, onClose, onSubmit }) => {
-  const [form] = Form.useForm<TAddCategorySubmitData>();
+export const SendMessage: React.FC<TProps> = ({ open, onClose, selectedChain, contractAddress }) => {
+  // ______________
+
+  const { form, setForm, onSubmit, isLoading, deployedContractLoading, displayedTxResult, setDisplayedTxResult } =
+    useSendMessageCrossChain({ deployedContractAddress: contractAddress });
+
+  useEffect(() => {
+    setForm(prev => ({
+      ...prev,
+      destinationChainSelector: selectedChain,
+    }));
+  }, [selectedChain, setForm]);
+  const handleForm = (key: string, value: string | number | null) => {
+    setForm(form => ({ ...form, [key]: value }));
+  };
+  const handleCancel = () => {
+    setForm({});
+    setDisplayedTxResult(undefined);
+    onClose();
+  };
 
   return (
     <Modal
       title="Send Message"
       style={{ top: 20 }}
       open={open}
-      onCancel={onClose}
+      onCancel={handleCancel}
       classNames={{
         header: "shadow-sm",
         body: "shadow-sm",
@@ -102,15 +69,9 @@ export const SendMessage: React.FC<TProps> = ({ open, onClose, onSubmit }) => {
       }}
       footer={
         <div className="flex flex-col gap-2">
-          <Input placeholder="Please enter an appropriate messae!" className="self-end" />
           <div className="flex gap-4 justify-end">
-            <Button onClick={onClose}>Cancel</Button>
-            <Button
-              type="primary"
-              onClick={() => form.submit()}
-              style={{ background: "#5E5ADB" }}
-              loading={onSubmit?.isLoading}
-            >
+            <Button onClick={handleCancel}>Cancel</Button>
+            <Button type="primary" onClick={onSubmit} style={{ background: "#5E5ADB" }} loading={isLoading}>
               Send
             </Button>
           </div>
@@ -118,39 +79,42 @@ export const SendMessage: React.FC<TProps> = ({ open, onClose, onSubmit }) => {
       }
     >
       <div className="flex flex-col gap-4">
-        <Skeleton loading={false} active paragraph={{ rows: 14 }}>
-          {data && data?.total === 0 ? (
-            <div className="flex flex-col h-full items-center justify-center">
-              <Empty description="No comments yet" />
-            </div>
-          ) : null}
-          <MessageList
-            toBottomHeight={"100%"}
-            className="message-list"
-            dataSource={
-              !data
-                ? []
-                : data?.data.map((comment, i) => ({
-                    avatar: comment.commenter.avatarUrl,
-                    text: comment.comment,
-                    title: comment.commenter.firstName,
-                    date: new Date(comment.createdAt),
-                    type: "text",
-                    id: comment.id,
-                    titleColor: "red",
-                    position: i === 1 ? "left" : "right",
-                    focus: false,
-                    forwarded: false,
-                    replyButton: false,
-                    removeButton: false,
-                    retracted: false,
-                    notch: false,
-                    status: "read",
-                  }))
-            }
-            referance={null}
-            lockable
-          />
+        <Skeleton loading={deployedContractLoading} active paragraph={{ rows: 14 }}>
+          <div className="flex flex-col gap-2">
+            <Input.Group compact className="w-full">
+              {" "}
+              <Select
+                suffixIcon={null}
+                style={{ width: "10%" }}
+                disabled
+                value={selectedChain}
+                options={DEFAULT_WALLET_CHAINS.map(chain => ({
+                  value: chain.chainId,
+
+                  label: (
+                    <div className="flex gap-2 items-center">
+                      <span>{chain.icon}</span>
+                      {/* <span className="capitalize">{chain.name}</span> */}
+                    </div>
+                  ),
+                }))}
+              />
+              <Input
+                style={{ width: "90%" }}
+                placeholder="Receiver"
+                value={form?.receiver}
+                onChange={e => handleForm("receiver", e.target.value)}
+              />
+            </Input.Group>
+            <Input.TextArea
+              rows={3}
+              value={form?.text}
+              placeholder="Please enter an appropriate message!"
+              onChange={e => handleForm("text", e.target.value)}
+              className="self-end"
+            />
+            {displayedTxResult ? <TxReceipt txResult={displayedTxResult} /> : null}
+          </div>
         </Skeleton>
       </div>
     </Modal>
