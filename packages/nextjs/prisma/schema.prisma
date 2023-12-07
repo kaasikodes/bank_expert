@@ -7,7 +7,8 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:hhYYKJG%^&*jkj4555@172.18.0.2:3306/bankxpert"
+  // url      = "mysql://root:hhYYKJG%^&*jkj4555@172.18.0.2:3306/bankxpert"
+  url      = "mysql://root:gU%^&*(ijgfs12)HHH@hk-cdb-hpii8arz.sql.tencentcdb.com:63919/bankxpert3"
 
   // url      = env("DATABASE_URL")
   // url      = "mysql://cdb-mnk613y2:hhYYKJG%^&*jkj4555@172.18.0.2:3306/bankxpert"
