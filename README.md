@@ -1,4 +1,4 @@
-# 🏗 Scaffold-ETH 2
+# 🏗 Bankxpert
 
 <h4 align="center">
   <a href="https://bank-expert-ruby.vercel.app/debug">Contracts</a> |
@@ -79,8 +79,6 @@ Run smart contract test with `yarn hardhat:test`
 
 ## What the future holds
 
-Visit our [docs](https://docs.scaffoldeth.io) to learn how to start building with Scaffold-ETH 2.
-
-To know more about its features, check out our [website](https://scaffoldeth.io).
+In the future we plan on implementating functionalities that will enable users transfer tokens other than the ccip-token supported via ccip cross-chain lanes (i.e other than CCIP-BNM or CCIP-LnM), allow users to add owners to different wallets, issue commands to wallets using messages for wallets to perform specific actions, .... The possibilities are endless
 
 
