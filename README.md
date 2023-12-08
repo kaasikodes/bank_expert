@@ -71,14 +71,10 @@ yarn start
 
 Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
 
-Run smart contract test with `yarn hardhat:test`
 
-- Edit your smart contract `YourContract.sol` in `packages/hardhat/contracts`
-- Edit your frontend in `packages/nextjs/pages`
-- Edit your deployment scripts in `packages/hardhat/deploy`
 
 ## What the future holds
 
-In the future we plan on implementating functionalities that will enable users transfer tokens other than the ccip-token supported via ccip cross-chain lanes (i.e other than CCIP-BNM or CCIP-LnM), allow users to add owners to different wallets, issue commands to wallets using messages for wallets to perform specific actions, .... The possibilities are endless
+In the future we plan on implementating functionalities that will enable users transfer tokens other than the ccip-token supported via ccip cross-chain lanes (i.e other than CCIP-BNM or CCIP-LnM), allow users to add owners to different wallets, issue commands to wallets using messages for wallets to perform specific actions, .... The possibilities are endless !!!
 
 
