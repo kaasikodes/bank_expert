@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LogoutOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
@@ -45,11 +45,11 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const handleLogout = () => {
     signOut();
   };
-  useEffect(() => {
-    if (!!session === false) {
-      push("/auth/login");
-    }
-  }, [push, session]);
+  // useEffect(() => {
+  //   if (!!session === false) {
+  //     push("/auth/login");
+  //   }
+  // }, [push, session]);
   const [action, setAction] = useState<"app-info">();
   return (
     <>
