@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ScheduleOutlined } from "@ant-design/icons";
-// import { useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { MetaHeader } from "~~/components/MetaHeader";
 
 interface IProps {
@@ -17,14 +17,14 @@ interface IProps {
 }
 
 const AuthLayout = ({ alternativeAction, children, heading }: IProps) => {
-  // const { data: session } = useSession();
+  const { data: session } = useSession();
 
-  // const { push } = useRouter();
-  // useLayoutEffect(() => {
-  //   if (!!session === true) {
-  //     push("/");
-  //   }
-  // }, [push, session]);
+  const { push } = useRouter();
+  useLayoutEffect(() => {
+    if (!!session === true) {
+      push("/");
+    }
+  }, [push, session]);
   return (
     <>
       <MetaHeader />
